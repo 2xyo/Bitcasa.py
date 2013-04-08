@@ -1,5 +1,5 @@
-# Bitcasa Command Line
-Bitcasasa Command Line is a script that allows you to upload on your Bitcasa account local files or files over http.
+# Bitcasa.py
+Bitcasa.py allow you to upload local files or weblinks to your [Bitcasa.com](https://bitcasa.com) account from command-line.
 
 Do not use this script unless you understand what you're doing[^1] or if you think that you are a hipster.
 
@@ -34,7 +34,7 @@ optional arguments:
 
 
 ### This is really crappy! 
-This is the only way I've found until the official release of the API Bitcasa.
+This is the only way I've found until the official release of the Bitcasa API.
 
 ###It's full of bugs!
 I'm waiting your pull request.
