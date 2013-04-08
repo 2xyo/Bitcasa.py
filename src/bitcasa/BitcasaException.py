@@ -1,4 +1,18 @@
-class BitCasaMaxConcurrentUpload(Exception):
+#!/bin/env python
+# -*- coding: utf-8 -*-
+
+"""Bitcasa Client
+
+
+"""
+
+__author__ = "Yohann Lepage"
+__version__ = "0.1"
+__email__ = "yohann@lepage.info"
+__status__ = "Broken"
+
+
+class BitcasaMaxConcurrentUpload(Exception):
     """Exception raised when we have reach the maximum of 3
     concurrent upload.
 
@@ -13,7 +27,7 @@ class BitCasaMaxConcurrentUpload(Exception):
     def __str__(self):
         return repr(self.value)
 
-class BitCasaMaxConcurrentUpload(Exception):
+class BitcasaLoginFailed(Exception):
     """Exception raised when we have reach the maximum of 3
     concurrent upload.
 

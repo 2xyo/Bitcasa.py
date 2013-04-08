@@ -1,29 +1,47 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Short title
+"""Bitcasa Core
 
-Long title
+
 """
 
-__author__ = ""
-__version__ = "1.0.1"
-__email__ = ""
-__status__ = "Production/Preprod/Dev"
+from BitcasaException import BitcasaMaxConcurrentUpload, BitcasaBadAuth
+
+__author__ = "Yohann Lepage"
+__version__ = "0.1"
+__email__ = "yohann@lepage.info"
+__status__ = "Broken"
 
 
 
-def main():
-	"""This function does something.
+class BitcasaCore(object):
+    """docstring for BitcasaCore"""
 
-    :param name: The name to use.
-    :type name: str.
-    :param state: Current state to be in.
-    :type state: bool.
-    :returns:  int -- the return code.
-    :raises: AttributeError, KeyError
-    #code
-    pass
+    def __init__(self, arg):
+        super(BitcasaCore, self).__init__()
+        self.arg = arg
+    
+    def login():
+        raise NotImplementedError
 
- if __name__ == '__main__':
-    main()
+    def uploadUrl():
+        raise NotImplementedError
+    
+    def uploadAllUrl():
+        raise NotImplementedError
+
+    def uploadFile():
+        raise NotImplementedError
+
+    def uploadDir():
+        raise NotImplementedError
+
+    def uploadList():
+        raise NotImplementedError
+
+    def status():
+        raise NotImplementedError
+
+    def search():
+        raise NotImplementedError

@@ -1,29 +1,22 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Short title
+"""Bitcasa Server
 
-Long title
+
 """
 
-__author__ = ""
-__version__ = "1.0.1"
-__email__ = ""
-__status__ = "Production/Preprod/Dev"
+__author__ = "Yohann Lepage"
+__version__ = "0.1"
+__email__ = "yohann@lepage.info"
+__status__ = "Broken"
 
 
 
-def main():
-	"""This function does something.
+class BitcasaServer(object):
+    """docstring for BitcasaCore"""
 
-    :param name: The name to use.
-    :type name: str.
-    :param state: Current state to be in.
-    :type state: bool.
-    :returns:  int -- the return code.
-    :raises: AttributeError, KeyError
-    #code
-    pass
-
- if __name__ == '__main__':
-    main()
+    def __init__(self, arg):
+        super(BitcasaServer, self).__init__()
+        self.arg = arg
+        
