@@ -6,14 +6,15 @@
 
 """
 
-from BitcasaException import BitcasaMaxConcurrentUpload, BitcasaBadAuth
-
 __author__ = "Yohann Lepage"
 __version__ = "0.1"
 __email__ = "yohann@lepage.info"
 __status__ = "Broken"
 
+import logging
+from BitcasaException import BitcasaMaxConcurrentUpload, BitcasaBadAuth
 
+log = logging.getLogger('bitcasa.core')
 
 class BitcasaCore(object):
     """docstring for BitcasaCore"""
@@ -22,26 +23,29 @@ class BitcasaCore(object):
         super(BitcasaCore, self).__init__()
         self.arg = arg
     
-    def login():
+    def login(self):
         raise NotImplementedError
 
-    def uploadUrl():
+    def uploadUrl(self):
         raise NotImplementedError
     
-    def uploadAllUrl():
+    def uploadAllUrl(self):
         raise NotImplementedError
 
-    def uploadFile():
+    def uploadFile(self):
         raise NotImplementedError
 
-    def uploadDir():
+    def uploadDir(self):
         raise NotImplementedError
 
-    def uploadList():
+    def uploadList(self):
         raise NotImplementedError
 
-    def status():
+    def status(self):
         raise NotImplementedError
 
-    def search():
+    def search(self):
         raise NotImplementedError
+
+    def hello(self):
+        log.info('hello')
