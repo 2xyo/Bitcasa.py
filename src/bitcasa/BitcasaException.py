@@ -1,7 +1,7 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Bitcasa Client
+"""Bitcasa.py Exception
 
 
 """
@@ -27,9 +27,8 @@ class BitcasaMaxConcurrentUpload(Exception):
     def __str__(self):
         return repr(self.value)
 
-class BitcasaLoginFailed(Exception):
-    """Exception raised when we have reach the maximum of 3
-    concurrent upload.
+class BitcasaBadAuth(Exception):
+    """Exception raised when authentification failed.
 
     Attributes:
         expr -- input expression in which the error occurred

@@ -13,6 +13,12 @@ __status__ = "Broken"
 
 import logging
 import threading
+import sys
+
+import errno
+from socket import error as socket_error
+
+from BitcasaCore import Bitcasa
 
 try:
     # Python 2
@@ -23,6 +29,13 @@ except ImportError:
     from xmlrpc.server import SimpleXMLRPCServer
     from xmlrpc.server import SimpleXMLRPCRequestHandler
 
+try:
+    # Python 2
+    from xmlrpclib import ServerProxy, ProtocolError
+except ImportError:
+    # Python 3
+    from xmlrpc.client import ServerProxy, ProtocolError
+
 
 log = logging.getLogger('bitcasa.server')
 
@@ -31,6 +44,8 @@ log = logging.getLogger('bitcasa.server')
 class BitcasaHandler(SimpleXMLRPCRequestHandler):
     """
     Main XMLRPC handler
+
+    Todo: Authentification
     """
     rpc_paths = ('/RPC2',)
 
@@ -41,73 +56,81 @@ class BitcasaInstance():
     """
 
     def __init__(self, username, password):
-        self.usernane = username
+        self.username = username
         self.password = password
-        
-    def hello(self):
-        log.info('hello')
-
-    def start(self):
-        log.info('start')
+        self.bitcasa = Bitcasa(self.username, self.password)
 
     def ping(self):
-        log.debug("ping")
-        return True
+        return self.bitcasa.hello()
     
     def deadlock(self):
         pass
 
 
 class BitcasaServerThread(threading.Thread):
+    """
 
-    def __init__(self, *args, **kwargs):
+    """
+    def __init__(self, _username, _password,
+                    _bind_address="127.0.0.1",
+                    _port=1664, *args, **kwargs):
 
-        self.bind_address = "localhost"
-        self.bind_port = 45670
+        self.bind_address = _bind_address
+        self.bind_port = _port
+        self.username = _username
+        self.password = _password
         threading.Thread.__init__(self)
         self.timeToQuit = threading.Event()
         self.timeToQuit.clear() 
 
 
     def stop(self):
+        """
+        Hara-Kiri  like a dumbass
+        """
         self.server.server_close()
-        self.server = None
         self.timeToQuit.set()
-        self.server.server_close()  
-        #self.server.deadlock() # dummy call to unlock the socket deadlock
+        sys.exit()
+
 
     def run(self):
         log.debug("Start Server Thread")
-        self.server = SimpleXMLRPCServer((self.bind_address, self.bind_port),
+        try:
+            self.server = SimpleXMLRPCServer((self.bind_address, self.bind_port),
                                          requestHandler=BitcasaHandler)
+        except socket_error as serr:
+            if serr.errno != errno.EADDRINUSE:
+                  log.critical(serr)
+                  sys.exit()
+            log.critical("The port is already used (maybe by an old process" 
+                        + " of Bitcasa.py, please choose another one.")
+            sys.exit()
+            
 
-        #self.server.register_introspection_functions()
+        self.server.register_introspection_functions()
+        self.server.register_function(self.stop)
+        self.server.register_instance(BitcasaInstance(self.username,self.password))
         
-        self.server.register_instance(BitcasaInstance("user","pass"))
-        
-
         while not self.timeToQuit.isSet():
             self.server.handle_request()
+
+        log.debug("Server thread stopped")
 
 
 class BitcasaServer():
     """
-    This class creates and manages the TCP Server
+    This class launches the TCP Server
     """
 
-    def __init__(self):
-        self.server = BitcasaServerThread()
+    def __init__(self, username, password):
+        self.server = BitcasaServerThread(username, password)
 
 
     def start(self):
         log.debug("Start Server")
         self.server.start()
-        log.debug("Server started")
 
 
     def stop(self):
-        log.debug("Stop Server")
-        self.server.stop()
-        
-        log.debug("Server stopped")
+        raise Exception("Server must me stopped by the client.")
 

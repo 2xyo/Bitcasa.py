@@ -1,7 +1,7 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Bitcasa Core
+"""Bitcasa.py Core
 
 
 """
@@ -16,12 +16,12 @@ from BitcasaException import BitcasaMaxConcurrentUpload, BitcasaBadAuth
 
 log = logging.getLogger('bitcasa.core')
 
-class BitcasaCore(object):
+class Bitcasa(object):
     """docstring for BitcasaCore"""
 
-    def __init__(self, arg):
-        super(BitcasaCore, self).__init__()
-        self.arg = arg
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
     
     def login(self):
         raise NotImplementedError
@@ -49,3 +49,4 @@ class BitcasaCore(object):
 
     def hello(self):
         log.info('hello')
+        return "Hello"

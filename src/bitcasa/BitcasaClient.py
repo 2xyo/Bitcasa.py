@@ -1,7 +1,7 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Bitcasa Client
+"""Bitcasa.py Client
 
 
 """
@@ -13,7 +13,9 @@ __status__ = "Broken"
 
 import logging
 import xmlrpclib
-
+import socket
+import sys
+import time
 
 try:
     # Python 2
@@ -25,12 +27,32 @@ except ImportError:
 
 log = logging.getLogger('bitcasa.client')
 
+
 class BitcasaClient(object):
     """docstring for BitcasaCore"""
 
-    def __init__(self, arg):
-        super(BitcasaClient, self).__init__()
-        self.arg = arg
+    def __init__(self, _username, _password,
+                 _address="127.0.0.1", _port=1664):
+
+        self.address = _address
+        self.port = _port
+        self.username = _username
+        self.password = _password 
+        
+        # try:
+        self.server = ServerProxy("http://" + self.address + ":" + str(self.port))
+        time.sleep(0.1)
+        
+        try:
+            self.server.ping()
+        except:
+             log.critical("Connection to the Bitcasa.py server failed !")
+             sys.exit()
+        else:
+            log.debug("Connected to the server")
+
+    def connection(self):
+        pass
 
     def login(self):
         raise NotImplementedError
@@ -57,4 +79,13 @@ class BitcasaClient(object):
         raise NotImplementedError
     
     def hello(self):
-        log.info('hello')
+        print self.server.system.listMethods()
+
+    def stopServer(self):
+        """
+        Yes, it's dirty.
+        """
+        try:
+            return self.server.stop()
+        except:
+            pass
