@@ -41,29 +41,28 @@ class BitcasaClient(object):
         
         # try:
         self.server = ServerProxy("http://" + self.address + ":" + str(self.port))
-        time.sleep(0.1)
-        
+    
         try:
-            self.server.ping()
+            log.debug(self.ping())
         except:
              log.critical("Connection to the Bitcasa.py server failed !")
              sys.exit()
         else:
             log.debug("Connected to the server")
 
-    def connection(self):
-        pass
+    def ping(self):
+        return self.server.ping()
 
     def login(self):
         raise NotImplementedError
 
-    def uploadUrl(self):
+    def uploadUrl(self, url):
         raise NotImplementedError
     
     def uploadAllUrl(self):
         raise NotImplementedError
 
-    def uploadFile(self):
+    def uploadFromFileList(self):
         raise NotImplementedError
 
     def uploadDir(self):
@@ -85,7 +84,7 @@ class BitcasaClient(object):
         """
         Yes, it's dirty.
         """
-        try:
-            return self.server.stop()
-        except:
-            pass
+        #try:
+        return self.server.stop()
+        #except:
+        #    pass

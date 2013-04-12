@@ -14,8 +14,9 @@ __status__ = "Broken"
 import logging
 import threading
 import sys
-
+import atexit
 import errno
+import time
 from socket import error as socket_error
 
 from BitcasaCore import Bitcasa
@@ -61,7 +62,7 @@ class BitcasaInstance():
         self.bitcasa = Bitcasa(self.username, self.password)
 
     def ping(self):
-        return self.bitcasa.hello()
+        return self.bitcasa.ping()
     
     def deadlock(self):
         pass
@@ -83,14 +84,14 @@ class BitcasaServerThread(threading.Thread):
         self.timeToQuit = threading.Event()
         self.timeToQuit.clear() 
 
-
+    #@staticmethod
     def stop(self):
         """
         Hara-Kiri  like a dumbass
         """
         self.server.server_close()
         self.timeToQuit.set()
-        sys.exit()
+        sys.exit(1)
 
 
     def run(self):
@@ -104,7 +105,7 @@ class BitcasaServerThread(threading.Thread):
                   sys.exit()
             log.critical("The port is already used (maybe by an old process" 
                         + " of Bitcasa.py, please choose another one.")
-            sys.exit()
+            sys.exit(1)
             
 
         self.server.register_introspection_functions()
@@ -129,8 +130,12 @@ class BitcasaServer():
     def start(self):
         log.debug("Start Server")
         self.server.start()
+        time.sleep(0.5)
 
 
     def stop(self):
         raise Exception("Server must me stopped by the client.")
 
+
+
+#atexit.register(cleanSocket)
