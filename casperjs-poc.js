@@ -1,33 +1,27 @@
-// $ casperjs --ignore-ssl-errors=true --proxy=127.0.0.1:8080 --web-security=no --cookies-file=mycookies.txt --local-storage-quota=50Mb --local-storage-path=store --disk-cache=true  bcasperjs-poc.js
-
 var casper = require('casper').create({
-    verbose: true,
-    logLevel: "debug",
+    //verbose: true,
+    //logLevel: "debug",
     waitTimeout: 80000
 });
 
 var utils = require('utils');
+var fs = require('fs')
+
 
 casper.start();
 
 casper.userAgent('Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.22 (KHTML, like Gecko) Ubuntu Chromium/25.0.1364.160 Chrome/25.0.1364.160 Safari/537.22');
 
-casper.thenOpen('https://my.bitcasa.com/logout', function() {
-    this.capture('0-homepage-loaded.png');
-});
+casper.thenOpen('https://my.bitcasa.com/logout');
 
 
 
 casper.waitForSelector('form button', function() {
-    this.capture('1-login-page-loaded.png'),
-
      this.fill('form[action]', { 
-        "user": "YOUR_EMAIL",
-        "password": "YOUT_PASSWORD"
+        "user": casper.cli.get("username"),
+        "password": casper.cli.get("password")
+     }, true);
 
-     }, true),
-
-     this.capture('2-login-filled.png');
 });
 
 
@@ -37,23 +31,16 @@ casper.then(function() {
 });
 
 
-casper.waitForSelector('article.ng-scope', function() {
-    this.captureSelector('2-Authentificated.png', 'html');
-});
-
+casper.waitForSelector('article.ng-scope');
 
 casper.thenOpen('https://portal.bitcasa.com');
 
-casper.waitForSelector('article.ng-scope', function() {
-    this.captureSelector('3-portal-done.png', 'html');
-});
-
-
+casper.waitForSelector('article.ng-scope');
 
 casper.thenOpen('https://portal.bitcasa.com/uploader/download-to-bitcasa', {
     method: 'post',
     data:   {
-        'file': casper.cli.get(0),
+        'file': casper.cli.get("url"),
         'cookie': '', 
         'cookies':  JSON.stringify([])
     },
@@ -66,15 +53,11 @@ casper.thenOpen('https://portal.bitcasa.com/uploader/download-to-bitcasa', {
         'X_REQUESTED_WITH': 'XMLHttpRequest'
 
     }
+    
 }, function(response) {
     require('utils').dump(response);
 });
 
-casper.thenOpen('https://portal.bitcasa.com');
-
-casper.waitForSelector('article.ng-scope', function() {
-    this.captureSelector('4-post-done.png', 'html');
-});
 
 
 casper.thenOpen('https://portal.bitcasa.com/uploader/get-upload-status', function(response) {
