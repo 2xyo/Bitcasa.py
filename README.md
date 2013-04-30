@@ -9,7 +9,7 @@ This script uses [casperjs](http://casperjs.org/) (and [phantomjs](http://phanto
 
 
 ```
-casperjs  --username=YOURUSERNAME --password=YOUPASSWORD --url=http://example.com/yourfile.ext poc.js
+casperjs  --username=YOURUSERNAME --password=YOUPASSWORD --url=http://example.com/yourfile.ext casperjs-poc.js
 ```
 
 ### This is really crappy! 
