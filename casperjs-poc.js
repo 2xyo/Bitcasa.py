@@ -25,12 +25,6 @@ casper.waitForSelector('form button', function() {
 });
 
 
-
-casper.then(function() {
-    this.click('form button');
-});
-
-
 casper.waitForSelector('article.ng-scope');
 
 casper.thenOpen('https://portal.bitcasa.com');
