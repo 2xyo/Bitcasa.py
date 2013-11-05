@@ -36,4 +36,5 @@ nosetests.xml
 
 # dev perso
 poc.js
-mycookies.txt
+mycookies*.txt
+*.png

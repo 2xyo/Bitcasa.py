@@ -1,6 +1,9 @@
+// casperjs --ignore-ssl-errors=true --proxy=127.0.0.1:8080 --web-security=no --cookies-file=mycookies.txt --local-storage-quota=50Mb --local-storage-path=store --disk-cache=true  bit.js
+
+
 var casper = require('casper').create({
-    //verbose: true,
-    //logLevel: "debug",
+    verbose: true,
+    logLevel: "debug",
     waitTimeout: 80000
 });
 
@@ -26,9 +29,9 @@ casper.waitForSelector('form button', function() {
 
 
 
-casper.then(function() {
-    this.click('form button');
-});
+//casper.then(function() {
+//    this.click('form button');
+//});
 
 
 casper.waitForSelector('article.ng-scope');
