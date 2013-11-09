@@ -18,30 +18,37 @@ casperjs  --username=YOURUSERNAME --password=YOUPASSWORD --url=http://example.co
 
 
 ## How does this script work?
-This script uses the Python binding for [selenium](https://pypi.python.org/pypi/selenium) in order to connect to the web interface of Bitcasa whith Firefox. 
+This script uses the Python binding for [selenium](https://pypi.python.org/pypi/selenium) in order to connect to the web interface of Bitcasa whith Firefox.
 
 
-```
-% ./getDownloadLinks.py
-Bitcasa username:
-yohann@lepage.info
-Password: 
+```bash
+$ ./getDownloadLinks.py
+Bitcasa username: you@email.dot
+Password:
 URL: (go to https://my.bitcasa.com/, open developer tools > Network > select XHR, get the F** Request URL)
-https://my.bitcasa.com/directory/44974e48354610fd84215e50930edfb755cbd7de83994beffbcb156f87840168/BPictures/?bottom=500&show-incomplete=true&sort_ascending=true&sort_column=name&top=0
-<ul>
-<li>(<a href='https://my.bitcasa.com/download-send/c3ea54blabla3b507/gifs.zip'>DL</a>) - <a href='http://l.bitcasa.com/XXXXX'>gifs</a> - (5.2 GB)</li>
-<li>(<a href='https://my.bitcasa.com/download-send/07f6blablaecf7ab/Photos.zip'>DL</a>) - <a href='http://l.bitcasa.com/YYYYYY'>Photos</a> - (406.5 GB)</li>
-</ul>
+It looks like https://my.bitcasa.com/directory/41911e413516101d84115e109101dabaee/cbd7de83994beffbcb156f87840168/Pictures/?bottom=500&show-incomplete=true&sort_ascending=true&sort_column=name&top=0
+URL: https://my.bitcasa.com/directory/44974e/?bottom=500&show-incomplete=true&sort_ascending=true&sort_column=name&top=0
+Directory 1
+Directory 2
+File 3
+...
 
+$ cat links.html
+<ul>
+<li>(<a href='https://my.bitcasa.com/download-send/65b07c1804d87cd7c54a20ae82/'>DL</a>) - <a href='http://l.bitcasa.com/q79TJGHUy'>Family movie.mkv</a> - (2.9 GB)</li>
+<li>...</li>
+</ul>
 ```
 
-### This is really crappy! 
+# FAQ
+
+### This is really crappy!
 This is the only way I've found until the official release of the Bitcasa API.
 
-###It's full of bugs!
+### It's full of bugs!
 I'm waiting your pull request.
 
-###It' slow!
+### It' slow!
 I'm still waiting your pull request.
 
 ### It's not headless?

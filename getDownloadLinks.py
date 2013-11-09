@@ -21,7 +21,6 @@ os.environ["DISPLAY"] = ":0"
 
 import getpass
 import json
-import logging
 import time
 import urllib
 import random
@@ -31,22 +30,24 @@ from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.support import ui
 
-logging.basicConfig()
-log = logging.getLogger(__name__)
-
 
 class BitCrawl:
+    """
+        Crawler for https://my.bitcasa.com"
+    """
 
     def __init__(self, user, password):
         self.browser = webdriver.Firefox()
-        self.browser.set_page_load_timeout(30)
+        self.browser.set_page_load_timeout(60)  # Bitcasa is SLOW
         self.user = user
         self.password = password
 
     def login(self):
+        """
+            Login on https://my.bitcasa.com"
+        """
         try:
             self.browser.get("https://my.bitcasa.com")
-            self.browser.implicitly_wait(5)
 
             user_input = self.browser.find_element_by_xpath(
                 '//*[@id="user"]')
@@ -60,7 +61,7 @@ class BitCrawl:
                 '//*[@id="content"]/form/ul/li[5]/button')
             button.click()
         except:
-            log.error("Bitcasa login sucks")
+            print("Bitcasa login sucks")
             self.login()
 
     def get_items(self, url):
@@ -73,8 +74,8 @@ class BitCrawl:
             name = urllib.quote(item['name'].encode('utf8'))
             path = urllib.quote(item['path'].encode('utf8'))
         except AttributeError:
-            name =  urllib.parse.quote(item['name'].encode('utf8'))
-            path =  urllib.parse.quote(item['path'].encode('utf8'))
+            name = urllib.parse.quote(item['name'].encode('utf8'))
+            path = urllib.parse.quote(item['path'].encode('utf8'))
 
         share_url = "https://my.bitcasa.com/share?name={0}&selection=%7B%22paths%22%3A%5B%22{1}%22%5D%2C%22albums%22%3A%7B%7D%2C%22artists%22%3A%5B%5D%2C%22photo_albums%22%3A%5B%5D%7D".format(name, path)
 
@@ -96,18 +97,20 @@ class BitCrawl:
 
         items = self.get_items(url)
 
-        print("<ul>")
+        with open("links.html", "w+") as f:
+            print("<ul>", file=f)
 
-        for item in items:
-            short_url = self.get_short_url(item)
-            size, direct_url = self.get_size_direct_url(short_url)
-            print("<li>(<a href='{}'>DL</a>) - <a href='{}'>{}</a> - ({})</li>".format(
-                direct_url,
-                self.get_short_url(item),
-                item['name'].encode('utf8'),
-                size))
+            for item in items:
+                short_url = self.get_short_url(item)
+                size, direct_url = self.get_size_direct_url(short_url)
+                print("<li>(<a href='{}'>DL</a>) - <a href='{}'>{}</a> - ({})</li>".format(
+                    direct_url,
+                    self.get_short_url(item),
+                    item['name'],
+                    size), file=f)
 
-        print("</ul>")
+                print(item['name'])
+            print("</ul>", file=f)
 
     def quit(self):
         self.browser.quit()
